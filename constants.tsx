@@ -43,8 +43,8 @@ export const PROJECTS: StoryProject[] = [
   {
     id: '4',
     title: '360Brief.com',
-    question: 'What is the "Minimum Viable Friction" for a scaling GTM team?',
-    description: 'A strategic hub for leaders to identify operational patterns. It provides a blueprint for applying efficiency-hacking to leadership and communication structures.',
+    question: 'How can we turn a hundred fragmented pings into a single, actionable brief?',
+    description: 'A strategic solution designed to consolidate fragmented streams of communication into one unified brief. It eliminates cross-channel noise, ensuring leadership stays aligned on what actually matters.',
     category: 'Dashboard',
     tags: ['Strategy', 'Leadership', 'GTM'],
     link: 'https://360brief.com',
@@ -54,10 +54,10 @@ export const PROJECTS: StoryProject[] = [
   {
     id: '5',
     title: 'Ho-Ho-Holidays Analysis',
-    question: 'Why are we obsessed with seasonal data peaks?',
-    description: 'Using R and ggplot2 to find the rhythm in holiday datasets. This project demonstrates how statistical rigor can be paired with engaging visual narratives to tell a cultural story.',
+    question: 'Does the "Modern Holiday Classic" actually exist, or are we just drowning in quantity?',
+    description: 'An 80-year cinematic investigation into the "Frequency of Greatness." This R-driven analysis tests if holiday movies are actually worse over time or simply buried by production volume. Includes deep dives into the 1960s quality desert, box office myths, and identifying which actors truly own the season.',
     category: 'Data',
-    tags: ['R', 'ggplot2', 'Visual Storytelling'],
+    tags: ['R', 'Statistics', 'Cinema History'],
     link: 'https://rpubs.com/askandrew/ho-ho-holidays',
     imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://rpubs.com/askandrew/ho-ho-holidays',
     color: 'from-green-500 to-emerald-400'

@@ -4,9 +4,14 @@ import React from 'react';
 const Hero: React.FC = () => {
   return (
     <div className="relative overflow-hidden">
-      {/* Background Shapes */}
+      {/* Background Shapes & Decorative Numbers */}
       <div className="absolute top-20 left-10 w-32 h-32 border-4 border-blue-500/20 rounded-[2rem] rotate-12 animate-pulse hidden md:block"></div>
       <div className="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl hidden md:block"></div>
+      
+      {/* Floating Numbers Decoration */}
+      <div className="absolute top-1/4 right-[15%] text-blue-500/10 text-9xl font-black select-none pointer-events-none animate-bounce hidden xl:block" style={{ animationDuration: '4s' }}>01</div>
+      <div className="absolute bottom-1/4 left-[5%] text-purple-500/10 text-8xl font-black select-none pointer-events-none animate-bounce hidden xl:block" style={{ animationDuration: '6s' }}>88</div>
+      
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-600/5 via-transparent to-transparent pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 grid md:grid-cols-2 gap-16 items-center relative z-10">
@@ -36,15 +41,24 @@ const Hero: React.FC = () => {
           
           <div className="relative z-10 w-full max-w-md aspect-square rounded-[4rem] overflow-hidden border-4 border-white/10 shadow-2xl transition-transform duration-700 hover:scale-105 group">
             <img 
-              src="https://api.typedream.com/v0/content/andrewledet/601e05d0-9942-4545-9764-16e6f4995f70_image.png" 
-              alt="Andrew Ledet"
+              src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1200" 
+              alt="Data Playground & Storytelling"
               className="w-full h-full object-cover filter contrast-125 saturate-50 group-hover:saturate-100 transition-all duration-700"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/profile/800/800';
+                (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/data-viz/800/800';
               }}
             />
+            {/* Playful Overlay Gradient */}
+            <div className="absolute inset-0 bg-blue-600/20 group-hover:bg-transparent transition-colors duration-500"></div>
+            
             {/* Playful SVG Element */}
-            <svg className="absolute top-6 right-6 w-16 h-16 text-white/40 animate-spin-slow" viewBox="0 0 100 100">
+            <div className="absolute top-6 right-6 flex space-x-2">
+               <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-white uppercase tracking-widest border border-white/10">
+                 Insight Found
+               </div>
+            </div>
+            
+            <svg className="absolute bottom-6 right-6 w-16 h-16 text-white/40 animate-spin-slow" viewBox="0 0 100 100">
               <path fill="currentColor" d="M50 0 L100 50 L50 100 L0 50 Z" />
             </svg>
           </div>
