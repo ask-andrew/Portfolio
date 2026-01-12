@@ -7,6 +7,7 @@ export interface Project {
   tags: string[];
   link?: string;
   imageUrl?: string;
+  source?: 'github' | 'manual' | 'netlify-linked'; // Added to distinguish project origin
 }
 
 export interface Experience {

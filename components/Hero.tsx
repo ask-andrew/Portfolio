@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
             Play with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">Data</span>. Tell a <span className="italic">Story</span>.
           </h1>
           <p className="text-slate-400 text-xl md:text-2xl mb-12 max-w-xl leading-relaxed font-medium">
-            Andrew Ledet here. I transform abstract numbers into operational clarity. Let's find the rhythm in your chaos.
+            I help make sense of your data, transforming abstract numbers into clear, actionable understanding. Let's find the rhythm in your business's unique challenges.
           </p>
           <div className="flex flex-wrap gap-6">
             <a href="#projects" className="px-10 py-5 bg-white text-slate-950 hover:bg-slate-200 transition-all rounded-[2rem] font-black text-lg shadow-2xl shadow-white/10 active:scale-95">

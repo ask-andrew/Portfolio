@@ -2,44 +2,14 @@
 import { Project, Experience, Skill, Testimonial } from './types';
 
 export interface StoryProject extends Project {
-  question: string;
-  color: string;
+  question?: string; // Made optional for dynamically fetched projects
+  color?: string;    // Made optional for dynamically fetched projects
 }
 
+/**
+ * Manually defined projects that are NOT on GitHub or require custom overrides.
+ */
 export const PROJECTS: StoryProject[] = [
-  {
-    id: '1',
-    title: 'The Shift Swapper',
-    question: 'How do we reclaim 40 hours of manual coordination every month?',
-    description: 'A React-based internal tool that replaces chaotic email threads with a clean, logic-driven exchange system. It turns scheduling friction into a collaborative game.',
-    category: 'App',
-    tags: ['React', 'Operations', 'Efficiency'],
-    link: 'https://theshiftswapper.netlify.app/',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://theshiftswapper.netlify.app/',
-    color: 'from-blue-500 to-cyan-400'
-  },
-  {
-    id: '2',
-    title: 'Library Collection Analytics',
-    question: 'Where should we spend our next $10,000 to maximize patron impact?',
-    description: 'A deep-dive statistical analysis using R to identify circulation trends. This data story revealed which collections were underperforming and which were "hidden gems" needing more shelf space.',
-    category: 'Data',
-    tags: ['R', 'Library Science', 'KPIs'],
-    link: 'https://rpubs.com/aledet/1344036',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://rpubs.com/aledet/1344036',
-    color: 'from-amber-400 to-orange-600'
-  },
-  {
-    id: '3',
-    title: 'The Sax Shed',
-    question: 'Can we visualize the "shape" of a jazz solo before playing a single note?',
-    description: 'An interactive lab for musicians. It deconstructs complex chord-scale theory into visual patterns, allowing players to explore the invisible mathematics of improvisation through play.',
-    category: 'App',
-    tags: ['TypeScript', 'Audio API', 'Jazz Theory'],
-    link: 'https://thesaxshed.netlify.app/',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://thesaxshed.netlify.app/',
-    color: 'from-purple-600 to-pink-500'
-  },
   {
     id: '4',
     title: '360Brief.com',
@@ -49,7 +19,8 @@ export const PROJECTS: StoryProject[] = [
     tags: ['Strategy', 'Leadership', 'GTM'],
     link: 'https://360brief.com',
     imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://360brief.com',
-    color: 'from-indigo-500 to-blue-800'
+    color: 'from-indigo-500 to-blue-800',
+    source: 'manual'
   },
   {
     id: '5',
@@ -60,20 +31,28 @@ export const PROJECTS: StoryProject[] = [
     tags: ['R', 'Statistics', 'Cinema History'],
     link: 'https://rpubs.com/askandrew/ho-ho-holidays',
     imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://rpubs.com/askandrew/ho-ho-holidays',
-    color: 'from-green-500 to-emerald-400'
+    color: 'from-green-500 to-emerald-400',
+    source: 'manual'
   },
-  {
-    id: '6',
-    title: 'Churn Prediction Lab (RPubs)',
-    question: 'Can we predict a departure before the customer even thinks of leaving?',
-    description: 'A collection of R analyses focused on SaaS health. By identifying "silence patterns" in product usage, we can intervene with surgical precision.',
-    category: 'Data',
-    tags: ['R', 'Predictive', 'SaaS Health'],
-    link: 'https://rpubs.com/aledet',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://rpubs.com/aledet',
-    color: 'from-rose-500 to-red-400'
-  }
 ];
+
+/**
+ * Map GitHub repository names to their corresponding Netlify deployment URLs.
+ * Projects listed here will use the Netlify URL as their primary link and image source,
+ * while still pulling descriptive content from GitHub.
+ *
+ * IMPORTANT: Populate this map with your actual GitHub repo names and Netlify URLs.
+ */
+export const NETLIFY_DEPLOYMENT_MAP: { [githubRepoName: string]: string } = {
+  // Example:
+  // 'my-github-repo-name': 'https://my-netlify-app.netlify.app',
+  'library-shift-swapper': 'https://library-shift-swapper.netlify.app',
+  'jazz-theory-app': 'https://jazz-theory-app.netlify.app',
+  'sentiment-analysis-dashboard': 'https://sentiment-analysis-dashboard.netlify.app',
+  'churn-prediction-model': 'https://churn-prediction-model.netlify.app',
+  // Add other GitHub repos that have Netlify deployments here.
+};
+
 
 export const TESTIMONIALS: Testimonial[] = [
   {
