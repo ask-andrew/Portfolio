@@ -47,13 +47,13 @@ const Projects: React.FC = () => {
       // Create a new project entry, using GitHub data but Netlify link/image
       const mergedProject: StoryProject = {
         ...matchingGithubProject,
-        id: `netlify-gh-${matchingGithubProject.id}`, // Unique ID for merged project, clearly marking its origin
+        id: `netlify-gh-${matchingGithubProject.id}`, 
         link: netlifyUrl,
         imageUrl: `https://image.thum.io/get/width/800/crop/600/${netlifyUrl}`,
-        source: 'netlify-linked', // Indicate it's a merged project
+        source: 'netlify-linked', 
       };
       finalProjectsMap.set(mergedProject.id, mergedProject);
-      processedGithubRepoNames.add(githubRepoName); // Mark this GitHub repo as processed
+      processedGithubRepoNames.add(githubRepoName.toLowerCase()); // Mark as processed
     }
   }
 
@@ -67,43 +67,18 @@ const Projects: React.FC = () => {
 
   const allProjects: StoryProject[] = Array.from(finalProjectsMap.values());
 
-  // Debugging log: Output the final project data before filtering/rendering
-  console.log("--- Final Processed Projects ---");
-  allProjects.forEach(p => {
-    console.log(`ID: ${p.id}, Title: "${p.title}", Source: ${p.source}, Link: ${p.link}, Image: ${p.imageUrl}`);
-  });
-  console.log("---------------------------------");
-
   // Sort projects: manual projects first, then Netlify-linked, then GitHub-only by ID (latest first)
   allProjects.sort((a, b) => {
-    // Define a clear order for the source types
     const order = { 'manual': 1, 'netlify-linked': 2, 'github': 3 };
-
-    // Get the order value for project A, defaulting to 'github' if source is undefined or unknown
     const orderA = order[a.source || 'github'] || 3;
-    // Get the order value for project B, defaulting to 'github'
     const orderB = order[b.source || 'github'] || 3;
 
     if (orderA !== orderB) {
       return orderA - orderB;
     }
 
-    // Within the same source type, sort by ID (latest first).
-    // Extract numeric part of ID for comparison.
-    const extractNumericId = (project: StoryProject) => {
-      let idString = project.id;
-      if (idString.startsWith('gh-') || idString.startsWith('netlify-gh-')) {
-        idString = idString.replace(/^(gh-|netlify-gh-)/, '');
-      }
-      return parseInt(idString);
-    };
-
-    const idNumA = extractNumericId(a);
-    const idNumB = extractNumericId(b);
-
-    return idNumB - idNumA; // Sort descending (latest first)
+    return (b.id || '').localeCompare(a.id || '');
   });
-
 
   const filteredProjects = filter === 'All' 
     ? allProjects 
@@ -116,7 +91,7 @@ const Projects: React.FC = () => {
           <div className="w-12 h-1 bg-blue-500 mb-6"></div>
           <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter">The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Pattern Lab</span></h2>
           <p className="text-slate-400 text-xl md:text-2xl leading-relaxed font-medium">
-            I build to answer questions. Each creation here is a solution to a real-world puzzle, turned into a data-driven story.
+            I build to answer questions. I prioritize using Netlify for project links and images, while documentation and code-level insights are sourced directly from GitHub.
           </p>
         </div>
         <div className="flex flex-wrap gap-2 bg-slate-900/50 p-2 rounded-[2rem] border border-slate-800 backdrop-blur-md">
@@ -142,7 +117,7 @@ const Projects: React.FC = () => {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Loading projects from GitHub...
+          Scanning for patterns...
         </div>
       )}
 
@@ -152,44 +127,61 @@ const Projects: React.FC = () => {
         </div>
       )}
 
-      {!loading && !error && filteredProjects.length === 0 && (
-        <div className="text-center text-slate-500 text-xl py-20">
-          No projects found for this category.
-        </div>
-      )}
-
-      {!loading && !error && filteredProjects.length > 0 && (
+      {!loading && !error && (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 lg:gap-16">
-          {filteredProjects.map((project, idx) => (
+          {filteredProjects.map((project) => (
             <div 
               key={project.id} 
               className="group relative flex flex-col bg-slate-900/40 border-2 border-slate-800 rounded-[3.5rem] overflow-hidden hover:border-white/10 transition-all duration-700 hover:shadow-[0_0_80px_rgba(59,130,246,0.1)]"
             >
               {/* Image Section */}
-              <div className="h-80 relative overflow-hidden">
+              <div className="h-80 relative overflow-hidden bg-slate-950/50">
                 <div className={`absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent z-10`}></div>
-                <img 
-                  src={project.imageUrl || 'https://picsum.photos/seed/project-placeholder/800/600'} 
-                  alt={project.title}
-                  className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/project-placeholder/800/600'; // Fallback image
-                  }}
-                />
+                
+                {project.imageUrl ? (
+                  <img 
+                    src={project.imageUrl} 
+                    alt={project.title}
+                    className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  /* Geometric Placeholder for GitHub-only repos */
+                  <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity">
+                    <div className="absolute inset-0 grid-pattern opacity-10"></div>
+                    <div className={`w-32 h-32 rounded-full border-4 border-white/10 flex items-center justify-center animate-spin-slow`}>
+                        <div className={`w-16 h-16 bg-gradient-to-br ${project.color || 'from-blue-500 to-cyan-400'} rounded-lg rotate-12`}></div>
+                    </div>
+                  </div>
+                )}
+                
                 <div className="absolute top-8 left-8 z-20">
                   <span className={`px-4 py-2 bg-gradient-to-r ${project.color || 'from-gray-500 to-gray-400'} text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-lg`}>
                     {project.category}
                   </span>
                 </div>
+
+                {project.source === 'github' && (
+                  <div className="absolute bottom-8 right-8 z-20">
+                    <span className="flex items-center space-x-2 px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                      </svg>
+                      <span>Code Repository</span>
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Content Section */}
               <div className="p-12 md:p-14 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-6 mb-8">
                   <div>
-                    <h4 className="text-blue-500 font-black text-xs uppercase tracking-[0.2em] mb-3">The Question</h4>
+                    <h4 className="text-blue-500 font-black text-xs uppercase tracking-[0.2em] mb-3">The Purpose</h4>
                     <p className="text-3xl md:text-4xl font-bold text-white leading-tight">
-                      "{project.question || 'A problem worth solving.'}"
+                      {project.title}
                     </p>
                   </div>
                   {project.link && (
@@ -218,9 +210,6 @@ const Projects: React.FC = () => {
                   ))}
                 </div>
               </div>
-              
-              {/* Background Accent */}
-              <div className={`absolute -bottom-20 -right-20 w-40 h-40 bg-gradient-to-br ${project.color || 'from-gray-500 to-gray-400'} opacity-0 group-hover:opacity-10 blur-[60px] transition-opacity duration-700`}></div>
             </div>
           ))}
         </div>

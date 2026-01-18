@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, Type } from '@google/genai';
 
 type Choice = {
   label: string;
@@ -29,116 +29,102 @@ const PatternGame: React.FC = () => {
   const [userResponse, setUserResponse] = useState('');
   const [showReflection, setShowReflection] = useState(false);
 
-  const generateChallenges = async (apiKey: string) => {
+  // Generates new challenges using Gemini API.
+  // ALWAYS uses gemini-3-pro-preview for complex generation tasks.
+  const generateChallenges = async () => {
     setLoading(true);
     setError('');
     
     try {
-      const ai = new GoogleGenAI({ apiKey: apiKey });
+      // API Key is obtained exclusively from process.env.API_KEY
+      if (!process.env.API_KEY) {
+        throw new Error('Gemini API Key is not configured.');
+      }
+      
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview", // Updated model
-        contents: [{
-          parts: [{
-            text: `Generate 6 unique pattern recognition challenges. Each should be genuinely fun and surprising.
+        model: "gemini-3-pro-preview",
+        contents: `Generate 6 unique pattern recognition challenges. Each should be genuinely fun and surprising.
 
 Mix these types:
 - Numeric sequences (Fibonacci, primes, geometric, arithmetic with twists)
 - Visual patterns with emojis (spatial, alternating, growing)
 - Mixed patterns (numbers + symbols, colors + shapes)
 
-Return ONLY valid JSON (no markdown, no explanation):
-{
-  "challenges": [
-    {
-      "funLabel": "short intriguing name (2-3 words)",
-      "funSeq": [array of 4-5 elements showing pattern],
-      "ans": "the next element",
-      "choices": [
-        {"label": "display text", "value": "actual value"},
-        {"label": "display text", "value": "actual value"},
-        {"label": "display text", "value": "actual value"},
-        {"label": "display text", "value": "actual value"}
-      ],
-      "saasTitle": "business pattern name (2-4 words)",
-      "saasInsight": "2-3 sentences explaining: (1) what the pattern is, (2) where it appears in business/work, (3) why recognizing it matters. Be specific and practical.",
-      "reflectionPrompt": "A thought-provoking question that makes them think about where they've seen this pattern in their own work. Start with 'Where' or 'When' or 'How'",
-      "color": "blue|purple|emerald|rose|orange|violet"
-    }
-  ]
-}
-
-Make patterns creative and varied. Ensure one correct answer per challenge. Make insights genuinely useful.`
-          }]
-        }],
-        config: { // Updated from generationConfig to config
-          temperature: 1.0,
-          maxOutputTokens: 3000
+Make patterns creative and varied. Ensure one correct answer per challenge. Make insights genuinely useful.`,
+        config: {
+          temperature: 0.8,
+          responseMimeType: "application/json",
+          // Define the exact schema for the expected response
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              challenges: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    funLabel: { type: Type.STRING },
+                    funSeq: { 
+                      type: Type.ARRAY, 
+                      items: { type: Type.STRING },
+                      description: 'The sequence of elements showing the pattern.'
+                    },
+                    ans: { type: Type.STRING, description: 'The next element in the pattern.' },
+                    choices: {
+                      type: Type.ARRAY,
+                      items: {
+                        type: Type.OBJECT,
+                        properties: {
+                          label: { type: Type.STRING },
+                          value: { type: Type.STRING }
+                        },
+                        required: ["label", "value"]
+                      }
+                    },
+                    saasTitle: { type: Type.STRING, description: 'A business or strategy term for this pattern.' },
+                    saasInsight: { type: Type.STRING, description: 'Practical explanation of this pattern in work.' },
+                    reflectionPrompt: { type: Type.STRING },
+                    color: { type: Type.STRING, description: 'One of: blue, purple, emerald, rose, orange, violet.' }
+                  },
+                  required: ["funLabel", "funSeq", "ans", "choices", "saasTitle", "saasInsight", "reflectionPrompt", "color"]
+                }
+              }
+            },
+            required: ["challenges"]
+          }
         }
       });
 
-      const text = response.text; // Access text property directly
+      // Directly access text property from response object
+      const text = response.text;
       
       if (!text) {
         throw new Error('No content received from Gemini API.');
       }
 
-      // Robustly extract JSON string by finding the first '{' and last '}'
-      const firstCurly = text.indexOf('{');
-      const lastCurly = text.lastIndexOf('}');
-
-      if (firstCurly === -1 || lastCurly === -1 || lastCurly < firstCurly) {
-        console.error('Raw API response (no curly braces found):', text); // Log the problematic response
-        throw new Error('Could not find a valid JSON object structure in API response.');
-      }
-
-      let jsonString = text.substring(firstCurly, lastCurly + 1);
-      
-      // Aggressive cleaning for common LLM JSON output issues
-      // 1. Remove non-printable ASCII control characters (excluding common whitespace like \n, \r, \t)
-      jsonString = jsonString.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
-      // 2. Remove trailing commas before closing curly braces or square brackets
-      jsonString = jsonString.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
-
-      const parsed = JSON.parse(jsonString);
-      
+      const parsed = JSON.parse(text);
       setChallenges(parsed.challenges);
       setLoading(false);
     } catch (err) {
       console.error('Error generating challenges:', err);
-      // Log the jsonString that caused the error if it was extracted but failed parsing
-      if (typeof (err as any).message === 'string' && (err as any).message.includes('JSON')) {
-        const text = (err as any).jsonString || (err as any).message; // Try to get the raw string if available from previous steps
-        console.error('Problematic JSON string:', text);
-      }
-      setError(`Failed to generate challenges: ${(err as Error).message}. Please check your API key and network connection.`);
+      setError(`Failed to generate challenges: ${(err as Error).message}.`);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const startGenerating = () => {
-      const apiKey = process.env.API_KEY;
-      if (!apiKey) {
-        setError('Gemini API Key is not configured. Please ensure process.env.API_KEY is set in your environment.');
-        setLoading(false);
-        return;
-      }
-      generateChallenges(apiKey);
-    };
-    startGenerating();
-  }, []); // Empty dependency array means it runs once on mount
+    generateChallenges();
+  }, []); // Run once on component mount
 
   const current = challenges[level];
 
   const handleChoice = (val: string | number) => {
-    if (isRevealed || !current) return; // Add check for current to prevent errors
+    if (isRevealed || !current) return;
 
     const chosenValue = val.toString().trim();
     const correctAnswer = current.ans.toString().trim();
-
-    console.log('User Choice (trimmed):', chosenValue);
-    console.log('Correct Answer (trimmed):', correctAnswer);
-    console.log('Is Correct:', chosenValue === correctAnswer);
 
     const isCorrect = chosenValue === correctAnswer;
 
@@ -177,13 +163,7 @@ Make patterns creative and varied. Ensure one correct answer per challenge. Make
     setShowReflection(false);
     setUserResponse('');
     setFeedback("Find the pattern...");
-    
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) {
-      setError('API Key is not configured. Cannot restart game.');
-      return;
-    }
-    generateChallenges(apiKey);
+    generateChallenges();
   };
 
   if (loading) {
@@ -207,18 +187,7 @@ Make patterns creative and varied. Ensure one correct answer per challenge. Make
           <h3 className="text-xl font-black text-white mb-2">Error</h3>
           <p className="text-slate-400 mb-6">{error}</p>
           <button
-            onClick={() => {
-              // On error, allow retrying generation with the existing API key
-              setLoading(true);
-              setError('');
-              const apiKey = process.env.API_KEY;
-              if (apiKey) {
-                generateChallenges(apiKey);
-              } else {
-                 setError('API Key is still not configured. Cannot retry.');
-                 setLoading(false);
-              }
-            }}
+            onClick={() => generateChallenges()}
             className="bg-blue-500 text-white px-6 py-3 rounded-2xl font-black hover:bg-blue-600 transition-all"
           >
             Try Again
@@ -228,9 +197,6 @@ Make patterns creative and varied. Ensure one correct answer per challenge. Make
     );
   }
 
-  // Ensure current challenge exists before rendering.
-  // This state should theoretically be covered by the loading/error checks,
-  // but adding a defensive check here is good practice.
   if (!current) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950">

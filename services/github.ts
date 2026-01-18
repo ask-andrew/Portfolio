@@ -48,7 +48,7 @@ export const fetchGitHubRepos = async (): Promise<StoryProject[]> => {
           category: category,
           tags: tags,
           link: repo.html_url,
-          imageUrl: `https://image.thum.io/get/width/800/crop/600/${repo.html_url}`,
+          // Removed imageUrl for GitHub-only repos to prevent highlighting repo code pages
           color: randomColor,
           source: 'github',
         };

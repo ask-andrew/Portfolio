@@ -1,71 +1,78 @@
 
 import React from 'react';
 
+/**
+ * Hero component for the landing page.
+ * Showcases the main value proposition and a high-impact visual of Andrew.
+ */
 const Hero: React.FC = () => {
-  return (
-    <div className="relative overflow-hidden">
-      {/* Background Shapes & Decorative Numbers */}
-      <div className="absolute top-20 left-10 w-32 h-32 border-4 border-blue-500/20 rounded-[2rem] rotate-12 animate-pulse hidden md:block"></div>
-      <div className="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl hidden md:block"></div>
-      
-      {/* Floating Numbers Decoration */}
-      <div className="absolute top-1/4 right-[15%] text-blue-500/10 text-9xl font-black select-none pointer-events-none animate-bounce hidden xl:block" style={{ animationDuration: '4s' }}>01</div>
-      <div className="absolute bottom-1/4 left-[5%] text-purple-500/10 text-8xl font-black select-none pointer-events-none animate-bounce hidden xl:block" style={{ animationDuration: '6s' }}>88</div>
-      
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-600/5 via-transparent to-transparent pointer-events-none"></div>
+  // Direct Google Drive link using the 'lh3' format for better reliability in web apps
+  const headshotUrl = "https://lh3.googleusercontent.com/d/1FtWbn6LluSxwc_Xa4VYNe9g-2pn45RrZ";
 
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 grid md:grid-cols-2 gap-16 items-center relative z-10">
-        <div className="order-2 md:order-1">
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-500/10 text-blue-400 border-2 border-blue-500/20 rounded-2xl text-xs font-black uppercase tracking-tighter mb-8">
-            <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
-            <span>STRATEGY • DATA • PLAY</span>
-          </div>
-          <h1 className="text-6xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter">
-            Play with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">Data</span>. Tell a <span className="italic">Story</span>.
-          </h1>
-          <p className="text-slate-400 text-xl md:text-2xl mb-12 max-w-xl leading-relaxed font-medium">
-            I help make sense of your data, transforming abstract numbers into clear, actionable understanding. Let's find the rhythm in your business's unique challenges.
-          </p>
-          <div className="flex flex-wrap gap-6">
-            <a href="#projects" className="px-10 py-5 bg-white text-slate-950 hover:bg-slate-200 transition-all rounded-[2rem] font-black text-lg shadow-2xl shadow-white/10 active:scale-95">
-              Explore Lab
-            </a>
-            <a href="#coaching" className="px-10 py-5 bg-slate-900 text-white hover:bg-slate-800 transition-all rounded-[2rem] font-black text-lg border-2 border-slate-800 active:scale-95">
-              Mindset Coaching
-            </a>
-          </div>
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-12 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+      <div className="order-2 md:order-1">
+        <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6">
+          I See <span className="text-blue-500">Patterns</span> Where Others See Noise.
+        </h1>
+        <p className="text-xl md:text-2xl text-slate-400 font-medium mb-10 leading-relaxed">
+          Andrew Ledet: Efficiency hacker, strategy coach, and data storyteller. Bridging the gap between complex data and human leadership.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <a 
+            href="#projects" 
+            className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl"
+          >
+            View Creations
+          </a>
+          <a 
+            href="#play" 
+            className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-lg border border-slate-700 transition-all transform hover:scale-105"
+          >
+            Play the Pattern Game
+          </a>
         </div>
-        
-        <div className="order-1 md:order-2 flex justify-center relative">
-          <div className="absolute -inset-10 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-[100px] rounded-full"></div>
+      </div>
+      
+      <div className="order-1 md:order-2 flex justify-center">
+        <div className="relative group">
+          {/* Decorative Background Blur */}
+          <div className="absolute -inset-4 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
           
-          <div className="relative z-10 w-full max-w-md aspect-square rounded-[4rem] overflow-hidden border-4 border-white/10 shadow-2xl transition-transform duration-700 hover:scale-105 group">
-            <img 
-              src="https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1200" 
-              alt="Data Playground & Storytelling"
-              className="w-full h-full object-cover filter contrast-125 saturate-50 group-hover:saturate-100 transition-all duration-700"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/data-viz/800/800';
-              }}
-            />
-            {/* Playful Overlay Gradient */}
-            <div className="absolute inset-0 bg-blue-600/20 group-hover:bg-transparent transition-colors duration-500"></div>
-            
-            {/* Playful SVG Element */}
-            <div className="absolute top-6 right-6 flex space-x-2">
-               <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-white uppercase tracking-widest border border-white/10">
-                 Insight Found
-               </div>
-            </div>
-            
-            <svg className="absolute bottom-6 right-6 w-16 h-16 text-white/40 animate-spin-slow" viewBox="0 0 100 100">
-              <path fill="currentColor" d="M50 0 L100 50 L50 100 L0 50 Z" />
-            </svg>
+          {/* Geometric Photo Frame */}
+          <div className="w-64 h-64 md:w-80 md:h-80 rounded-[3rem] overflow-hidden border-4 border-slate-800 shadow-2xl relative z-10 rotate-3 transition-transform group-hover:rotate-0 flex items-center justify-center bg-slate-900">
+             <img 
+               src={headshotUrl} 
+               alt="Andrew Ledet" 
+               className="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+               loading="lazy"
+               onError={(e) => {
+                 // Final fallback in case of absolute network failure
+                 const target = e.target as HTMLImageElement;
+                 target.style.display = 'none';
+                 const parent = target.parentElement;
+                 if (parent) {
+                    const initials = document.createElement('div');
+                    initials.className = 'text-blue-500 font-black text-6xl';
+                    initials.innerText = 'AL';
+                    parent.appendChild(initials);
+                 }
+               }}
+             />
+             
+             {/* Overlay pattern for texture */}
+             <div className="absolute inset-0 grid-pattern opacity-10 pointer-events-none"></div>
           </div>
           
-          {/* Decorative Geometric Elements */}
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl"></div>
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+          {/* Floating Badge */}
+          <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-slate-950 border-2 border-slate-800 rounded-3xl p-4 flex flex-col justify-center items-center shadow-2xl z-20 -rotate-12 group-hover:rotate-0 transition-transform">
+            <span className="text-blue-500 font-black text-2xl">10+</span>
+            <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest text-center">Years of Strategy</span>
+          </div>
+
+          {/* Abstract Line Detail */}
+          <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-blue-500/40 rounded-tl-xl z-0"></div>
+          <div className="absolute -bottom-10 -right-10 w-24 h-24 border-b-2 border-r-2 border-blue-500/20 rounded-br-3xl z-0"></div>
         </div>
       </div>
     </div>
