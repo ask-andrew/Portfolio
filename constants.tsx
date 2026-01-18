@@ -23,6 +23,30 @@ export const PROJECTS: StoryProject[] = [
     source: 'manual'
   },
   {
+    id: 'library-shift-swapper-manual',
+    title: 'Library Shift Swapper',
+    question: 'How do we solve the chaos of student worker scheduling?',
+    description: 'A streamlined application for managing library staff shifts, allowing for easy swaps and real-time schedule visibility. Built to reduce administrative friction in high-turnover environments.',
+    category: 'App',
+    tags: ['React', 'Scheduling', 'Efficiency'],
+    link: 'https://library-shift-swapper.netlify.app',
+    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://library-shift-swapper.netlify.app',
+    color: 'from-blue-400 to-indigo-600',
+    source: 'manual'
+  },
+  {
+    id: 'jazz-theory-app-manual',
+    title: 'Jazz Theory Explorer',
+    question: 'Can we map the infinite patterns of jazz improvisation?',
+    description: 'A visual tool for exploring chord-scale relationships and harmonic substitutions in jazz music. Bringing data visualization to the world of musical theory.',
+    category: 'App',
+    tags: ['Music Tech', 'Theory', 'Interactive'],
+    link: 'https://jazz-theory-app.netlify.app',
+    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://jazz-theory-app.netlify.app',
+    color: 'from-purple-500 to-pink-500',
+    source: 'manual'
+  },
+  {
     id: '4',
     title: '360Brief.com',
     question: 'How can we turn a hundred fragmented pings into a single, actionable brief?',

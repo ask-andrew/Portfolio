@@ -161,6 +161,11 @@ Mix types:
       setFeedback("Find the pattern...");
     } else {
       setFeedback("Pattern Master: Complete!");
+      // Smooth scroll to projects
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
