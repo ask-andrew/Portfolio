@@ -2,83 +2,88 @@
 import React, { useState, useEffect } from 'react';
 import { PROJECTS, StoryProject, NETLIFY_DEPLOYMENT_MAP } from '../constants';
 import { fetchGitHubRepos } from '../services/github';
+import { fetchSubstackPosts } from '../services/substack';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState<string>('All');
-  const [githubProjects, setGithubProjects] = useState<StoryProject[]>([]);
+  const [allProjects, setAllProjects] = useState<StoryProject[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const categories = ['All', 'App', 'Data', 'Dashboard'];
 
   useEffect(() => {
-    const getProjects = async () => {
+    const getAllData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const fetchedRepos = await fetchGitHubRepos();
-        setGithubProjects(fetchedRepos);
+        const [githubData, substackData] = await Promise.all([
+          fetchGitHubRepos(),
+          fetchSubstackPosts()
+        ]);
+
+        const finalProjectsMap = new Map<string, StoryProject>();
+
+        // 1. Add manual projects from constants
+        PROJECTS.forEach(p => finalProjectsMap.set(p.id, p));
+
+        // 2. Add fetched Substack posts (keeping unique)
+        substackData.forEach(p => {
+          if (!finalProjectsMap.has(p.id)) finalProjectsMap.set(p.id, p);
+        });
+
+        // 3. Process Netlify-linked GitHub projects
+        const processedGithubRepoNames = new Set<string>();
+        for (const githubRepoName in NETLIFY_DEPLOYMENT_MAP) {
+          const netlifyUrl = NETLIFY_DEPLOYMENT_MAP[githubRepoName];
+          const matchingGithubProject = githubData.find(gh =>
+            gh.title.toLowerCase().replace(/ /g, '-') === githubRepoName.toLowerCase()
+          );
+
+          if (matchingGithubProject) {
+            const mergedProject: StoryProject = {
+              ...matchingGithubProject,
+              id: `netlify-gh-${matchingGithubProject.id}`, 
+              link: netlifyUrl,
+              imageUrl: `https://image.thum.io/get/width/800/crop/600/${netlifyUrl}`,
+              source: 'netlify-linked', 
+            };
+            finalProjectsMap.set(mergedProject.id, mergedProject);
+            processedGithubRepoNames.add(githubRepoName.toLowerCase());
+          }
+        }
+
+        // 4. Add remaining GitHub projects
+        githubData.forEach(gh => {
+          const githubRepoNameFormatted = gh.title.toLowerCase().replace(/ /g, '-');
+          if (!processedGithubRepoNames.has(githubRepoNameFormatted)) {
+            finalProjectsMap.set(gh.id, gh);
+          }
+        });
+
+        const combined = Array.from(finalProjectsMap.values());
+
+        // Sort: Manual highlights (Substack main, etc) -> Netlify Apps -> Substack Posts -> Raw GitHub
+        combined.sort((a, b) => {
+          const getWeight = (p: StoryProject) => {
+            if (p.id === 'substack-main') return 0;
+            if (p.source === 'manual') return 1;
+            if (p.source === 'netlify-linked') return 2;
+            return 3;
+          };
+          return getWeight(a) - getWeight(b);
+        });
+
+        setAllProjects(combined);
       } catch (err) {
-        setError('Failed to load GitHub projects. Please try again later.');
+        setError('Failed to load project patterns. Please refresh.');
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    getProjects();
+    getAllData();
   }, []);
-
-  // Map to store final projects, handling merges and preventing duplicates
-  const finalProjectsMap = new Map<string, StoryProject>();
-
-  // 1. Add manually defined projects
-  PROJECTS.forEach(p => finalProjectsMap.set(p.id, p));
-
-  // 2. Process Netlify-linked projects first (prioritize Netlify URL)
-  const processedGithubRepoNames = new Set<string>();
-  for (const githubRepoName in NETLIFY_DEPLOYMENT_MAP) {
-    const netlifyUrl = NETLIFY_DEPLOYMENT_MAP[githubRepoName];
-    // Find GitHub project using a normalized name for robust matching
-    const matchingGithubProject = githubProjects.find(gh =>
-      gh.title.toLowerCase().replace(/ /g, '-') === githubRepoName.toLowerCase()
-    );
-
-    if (matchingGithubProject) {
-      // Create a new project entry, using GitHub data but Netlify link/image
-      const mergedProject: StoryProject = {
-        ...matchingGithubProject,
-        id: `netlify-gh-${matchingGithubProject.id}`, 
-        link: netlifyUrl,
-        imageUrl: `https://image.thum.io/get/width/800/crop/600/${netlifyUrl}`,
-        source: 'netlify-linked', 
-      };
-      finalProjectsMap.set(mergedProject.id, mergedProject);
-      processedGithubRepoNames.add(githubRepoName.toLowerCase()); // Mark as processed
-    }
-  }
-
-  // 3. Add remaining GitHub projects (those not linked to Netlify)
-  githubProjects.forEach(gh => {
-    const githubRepoNameFormatted = gh.title.toLowerCase().replace(/ /g, '-');
-    if (!processedGithubRepoNames.has(githubRepoNameFormatted)) {
-      finalProjectsMap.set(gh.id, gh);
-    }
-  });
-
-  const allProjects: StoryProject[] = Array.from(finalProjectsMap.values());
-
-  // Sort projects: manual projects first, then Netlify-linked, then GitHub-only by ID (latest first)
-  allProjects.sort((a, b) => {
-    const order = { 'manual': 1, 'netlify-linked': 2, 'github': 3 };
-    const orderA = order[a.source || 'github'] || 3;
-    const orderB = order[b.source || 'github'] || 3;
-
-    if (orderA !== orderB) {
-      return orderA - orderB;
-    }
-
-    return (b.id || '').localeCompare(a.id || '');
-  });
 
   const filteredProjects = filter === 'All' 
     ? allProjects 
@@ -91,7 +96,7 @@ const Projects: React.FC = () => {
           <div className="w-12 h-1 bg-blue-500 mb-6"></div>
           <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter">The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Pattern Lab</span></h2>
           <p className="text-slate-400 text-xl md:text-2xl leading-relaxed font-medium">
-            I build to answer questions. I prioritize using Netlify for project links and images, while documentation and code-level insights are sourced directly from GitHub.
+            I build and write to answer questions. Here is the intersection of my software, data analysis, and strategic prose from Substack.
           </p>
         </div>
         <div className="flex flex-wrap gap-2 bg-slate-900/50 p-2 rounded-[2rem] border border-slate-800 backdrop-blur-md">
@@ -117,7 +122,7 @@ const Projects: React.FC = () => {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Scanning for patterns...
+          Aggregating patterns from GitHub & Substack...
         </div>
       )}
 
@@ -134,7 +139,6 @@ const Projects: React.FC = () => {
               key={project.id} 
               className="group relative flex flex-col bg-slate-900/40 border-2 border-slate-800 rounded-[3.5rem] overflow-hidden hover:border-white/10 transition-all duration-700 hover:shadow-[0_0_80px_rgba(59,130,246,0.1)]"
             >
-              {/* Image Section */}
               <div className="h-80 relative overflow-hidden bg-slate-950/50">
                 <div className={`absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent z-10`}></div>
                 
@@ -148,7 +152,6 @@ const Projects: React.FC = () => {
                     }}
                   />
                 ) : (
-                  /* Geometric Placeholder for GitHub-only repos */
                   <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity">
                     <div className="absolute inset-0 grid-pattern opacity-10"></div>
                     <div className={`w-32 h-32 rounded-full border-4 border-white/10 flex items-center justify-center animate-spin-slow`}>
@@ -163,23 +166,22 @@ const Projects: React.FC = () => {
                   </span>
                 </div>
 
-                {project.source === 'github' && (
+                {project.id.includes('substack') && (
                   <div className="absolute bottom-8 right-8 z-20">
-                    <span className="flex items-center space-x-2 px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                      </svg>
-                      <span>Code Repository</span>
+                    <span className="flex items-center space-x-2 px-3 py-1 bg-orange-600/40 backdrop-blur-md border border-orange-400/20 rounded-full text-[9px] font-bold text-white uppercase tracking-widest">
+                      <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></span>
+                      <span>Substack Insight</span>
                     </span>
                   </div>
                 )}
               </div>
 
-              {/* Content Section */}
               <div className="p-12 md:p-14 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-6 mb-8">
                   <div>
-                    <h4 className="text-blue-500 font-black text-xs uppercase tracking-[0.2em] mb-3">The Purpose</h4>
+                    <h4 className="text-blue-500 font-black text-xs uppercase tracking-[0.2em] mb-3">
+                      {project.id.includes('substack') ? 'The Insight' : 'The Creation'}
+                    </h4>
                     <p className="text-3xl md:text-4xl font-bold text-white leading-tight">
                       {project.title}
                     </p>

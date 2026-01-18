@@ -11,6 +11,18 @@ export interface StoryProject extends Project {
  */
 export const PROJECTS: StoryProject[] = [
   {
+    id: 'substack-main',
+    title: 'AskAndrew Substack',
+    question: 'Where do patterns meet prose?',
+    description: 'Weekly insights on the intersection of strategy, leadership, and efficiency hacking. Finding the unseen rhythms in business and life.',
+    category: 'App',
+    tags: ['Writing', 'Strategy', 'Insights'],
+    link: 'https://askandrew.substack.com/',
+    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://askandrew.substack.com/',
+    color: 'from-orange-500 to-rose-600',
+    source: 'manual'
+  },
+  {
     id: '4',
     title: '360Brief.com',
     question: 'How can we turn a hundred fragmented pings into a single, actionable brief?',
@@ -38,19 +50,12 @@ export const PROJECTS: StoryProject[] = [
 
 /**
  * Map GitHub repository names to their corresponding Netlify deployment URLs.
- * Projects listed here will use the Netlify URL as their primary link and image source,
- * while still pulling descriptive content from GitHub.
- *
- * IMPORTANT: Populate this map with your actual GitHub repo names and Netlify URLs.
  */
 export const NETLIFY_DEPLOYMENT_MAP: { [githubRepoName: string]: string } = {
-  // Example:
-  // 'my-github-repo-name': 'https://my-netlify-app.netlify.app',
   'library-shift-swapper': 'https://library-shift-swapper.netlify.app',
   'jazz-theory-app': 'https://jazz-theory-app.netlify.app',
   'sentiment-analysis-dashboard': 'https://sentiment-analysis-dashboard.netlify.app',
   'churn-prediction-model': 'https://churn-prediction-model.netlify.app',
-  // Add other GitHub repos that have Netlify deployments here.
 };
 
 

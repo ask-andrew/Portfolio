@@ -9,15 +9,16 @@ const Footer: React.FC = () => {
           <div className="w-6 h-6 bg-blue-600 rounded-sm rotate-45 flex items-center justify-center">
             <span className="text-white font-bold text-[10px] -rotate-45">AL</span>
           </div>
-          <span className="font-bold text-sm tracking-tight text-slate-400 uppercase">ANDREW LEDET</span>
+          <span className="font-black text-lg tracking-tight text-white uppercase">AskAndrew</span>
         </div>
         
-        <p className="text-slate-600 text-sm">
-          &copy; {new Date().getFullYear()} Andrew Ledet. Built with React & Tailwind.
+        <p className="text-slate-600 text-sm font-medium">
+          &copy; {new Date().getFullYear()} AskAndrew. Built for the curious.
         </p>
         
-        <div className="flex space-x-6 text-slate-500">
-          <a href="https://linkedin.com/in/andrewledet" className="hover:text-blue-500 transition-colors">LinkedIn</a>
+        <div className="flex space-x-6 text-slate-500 font-bold text-xs uppercase tracking-widest">
+          <a href="https://askandrew.substack.com/" target="_blank" className="hover:text-orange-400 transition-colors">Substack</a>
+          <a href="https://linkedin.com/in/andrewledet" target="_blank" className="hover:text-blue-500 transition-colors">LinkedIn</a>
           <a href="mailto:andrew.ledet@gmail.com" className="hover:text-blue-500 transition-colors">Email</a>
         </div>
       </div>

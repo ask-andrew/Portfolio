@@ -58,7 +58,12 @@ const Coaching: React.FC = () => {
                 That's the question we answer in my strategy sessions. We bridge the gap between technical wizardry and human leadership.
               </p>
               <div className="pt-8">
-                <a href="#contact" className="inline-flex items-center space-x-4 group/btn">
+                <a 
+                  href="https://calendar.app.google/fgRCxYxdCTaVWDxF6" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center space-x-4 group/btn"
+                >
                   <span className="text-2xl font-black text-blue-400 group-hover/btn:text-white transition-colors underline decoration-blue-500 underline-offset-8">Book a session</span>
                   <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-slate-950 group-hover/btn:scale-110 transition-transform">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
