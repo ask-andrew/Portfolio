@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
         <div className="flex space-x-6 text-slate-500 font-bold text-xs uppercase tracking-widest">
           <a href="https://askandrew.substack.com/" target="_blank" className="hover:text-orange-400 transition-colors">Substack</a>
           <a href="https://linkedin.com/in/andrewledet" target="_blank" className="hover:text-blue-500 transition-colors">LinkedIn</a>
-          <a href="mailto:andrew.ledet@gmail.com" className="hover:text-blue-500 transition-colors">Email</a>
+          <a href="mailto:askandrewcoaching@gmail.com" className="hover:text-blue-500 transition-colors">Email</a>
         </div>
       </div>
     </footer>

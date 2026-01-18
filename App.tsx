@@ -59,7 +59,7 @@ const App: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="mailto:andrew.ledet@gmail.com" 
+                href="mailto:askandrewcoaching@gmail.com" 
                 className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-500 transition-colors rounded-lg font-semibold text-lg"
               >
                 Send an Email
