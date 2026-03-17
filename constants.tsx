@@ -82,7 +82,7 @@ export const TESTIMONIALS: Testimonial[] = [
     id: 't2',
     name: 'Jeremy Levin',
     role: 'Account Manager @ G2',
-    content: "Andrew's love for data taught me #efficiency-hacking. He led an initiative to bring data to the fingertips of every employee, developing G2's first QBR Machine."
+    content: "Andrew's love for data taught me #efficiency-hacking. He led an initiative to bring data to the fingertips of every employee, developing G2's first QBR Machine. He doesn't just suggest improvements; he builds the systems that make them permanent."
   },
   {
     id: 't3',

@@ -13,23 +13,23 @@ const Hero: React.FC = () => {
     <div className="max-w-7xl mx-auto px-6 py-12 md:py-24 grid md:grid-cols-2 gap-12 items-center">
       <div className="order-2 md:order-1">
         <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6">
-          I See <span className="text-blue-500">Patterns</span> Where Others See Noise.
+          I help teams <span className="text-blue-500">work smarter</span>.
         </h1>
         <p className="text-xl md:text-2xl text-slate-400 font-medium mb-10 leading-relaxed">
-          Andrew Ledet: Efficiency hacker, strategy coach, and data storyteller. Bridging the gap between complex data and human leadership.
+          I fix the broken processes that slow you down and build the tools that speed you up. I bridge the gap between technical execution and operational strategy.
         </p>
         <div className="flex flex-wrap gap-4">
           <a 
-            href="#projects" 
+            href="#coaching" 
             className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl"
           >
-            View Creations
+            How I Help
           </a>
           <a 
-            href="#play" 
+            href="#projects" 
             className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-lg border border-slate-700 transition-all transform hover:scale-105"
           >
-            Play the Pattern Game
+            View My Builds
           </a>
         </div>
       </div>
