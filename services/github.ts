@@ -23,7 +23,7 @@ export const fetchGitHubRepos = async (): Promise<StoryProject[]> => {
     const data = await response.json();
 
     return data
-      .filter((repo: any) => !repo.fork && !GITHUB_EXCLUDE_REPOS.includes(repo.name))
+      .filter((repo: any) => !repo.fork && !GITHUB_EXCLUDE_REPOS.includes(repo.name) && (repo.topics || []).includes('portfolio-featured'))
       .map((repo: any): StoryProject => {
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         
