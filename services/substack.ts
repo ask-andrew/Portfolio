@@ -14,20 +14,32 @@ export const fetchSubstackPosts = async (): Promise<StoryProject[]> => {
     if (data.status !== 'ok') return [];
 
     return data.items.map((item: any, index: number): StoryProject => {
-      // Clean up description (Substack RSS often includes a lot of HTML)
+      // Clean up description
       const plainText = item.description.replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';
+      
+      // Use thumbnail if available, otherwise try to find an image in the content
+      let imageUrl = item.thumbnail;
+      if (!imageUrl && item.content) {
+        const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/);
+        if (imgMatch) imageUrl = imgMatch[1];
+      }
+      
+      // If still no image, use the thum.io link for the specific post
+      if (!imageUrl) {
+        imageUrl = `https://image.thum.io/get/width/800/crop/600/${item.link}`;
+      }
       
       return {
         id: `substack-${index}`,
         title: item.title,
         description: plainText,
         question: `Insight from AskAndrew: "${item.title}"`,
-        category: 'Data', // Defaulting to Data as these are usually data-driven insights
+        category: 'Data',
         tags: ['Substack', 'Strategy', 'Writing'],
         link: item.link,
-        imageUrl: item.thumbnail || `https://image.thum.io/get/width/800/crop/600/${item.link}`,
+        imageUrl: imageUrl,
         color: 'from-orange-500 to-rose-500',
-        source: 'manual' // Treat as manual for high-priority rendering
+        source: 'manual'
       };
     });
   } catch (error) {

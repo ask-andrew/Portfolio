@@ -13,11 +13,11 @@ const Navbar: React.FC = () => {
         </a>
         
         <div className="hidden md:flex space-x-8 text-sm font-black uppercase tracking-widest text-slate-500">
-          <a href="#projects" className="hover:text-white transition-colors">Creations</a>
-          <a href="https://askandrew.substack.com/" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">Substack</a>
-          <a href="#coaching" className="hover:text-white transition-colors">Coaching</a>
+          <a href="#projects" className="hover:text-white transition-colors">Builds</a>
+          <a href="#coaching" className="hover:text-white transition-colors">How I Help</a>
           <a href="#experience" className="hover:text-white transition-colors">History</a>
-          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+          <a href="https://askandrew.substack.com/" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">Writing</a>
+          <a href="#contact" className="hover:text-white transition-colors font-bold text-blue-500">Hire Me</a>
         </div>
 
         <div className="flex items-center space-x-4">

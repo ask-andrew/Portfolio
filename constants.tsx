@@ -120,14 +120,32 @@ export const EXPERIENCES: Experience[] = [
       'Architected the "QBR Machine" (Looker + Gong) to automate data storytelling.',
       'Managed a $18M ARR book with a focus on pattern-based churn prediction.'
     ]
+  },
+  {
+    id: 'exp3',
+    company: 'Ziff Davis (eMedia)',
+    role: 'Client Services Manager',
+    period: '2009 – 2016',
+    highlights: [
+      'Built and led the Client Services team supporting B2B lead-generation programs.',
+      'Grew partner revenue share from 20% to 60% through strategic relationship development.',
+      'Optimized delivery workflows for high-volume performance marketing campaigns.'
+    ]
   }
 ];
 
 export const SKILLS: Skill[] = [
   { name: 'Efficiency Hacking', category: 'Strategy' },
   { name: 'Pattern Recognition', category: 'Strategy' },
+  { name: 'Conscious Leadership', category: 'Strategy' },
+  { name: 'GTM Operations', category: 'Strategy' },
   { name: 'R (Tidyverse)', category: 'Data' },
-  { name: 'Data Storytelling', category: 'Data' },
+  { name: 'SQL (Basic)', category: 'Data' },
   { name: 'Looker / LookML', category: 'Data' },
-  { name: 'Conscious Leadership', category: 'Strategy' }
+  { name: 'Tableau / DOMO', category: 'Data' },
+  { name: 'Excel / Google Sheets', category: 'Data' },
+  { name: 'Salesforce (SFDC)', category: 'Tools' },
+  { name: 'HubSpot / Clari', category: 'Tools' },
+  { name: 'Gong / Chorus', category: 'Tools' },
+  { name: 'AI (ChatGPT, Claude, Gemini CLI)', category: 'Tools' }
 ];

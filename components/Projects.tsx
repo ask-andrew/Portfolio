@@ -74,14 +74,22 @@ const Projects: React.FC = () => {
               className="group relative flex flex-col bg-slate-900/40 border-2 border-slate-800 rounded-[2.5rem] overflow-hidden hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_50px_rgba(59,130,246,0.15)]"
             >
               <div className="h-72 relative overflow-hidden bg-slate-950">
+                <div className="absolute inset-0 bg-slate-900 animate-pulse flex items-center justify-center text-slate-800">
+                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
                 {project.imageUrl && (
                   <img 
                     src={project.imageUrl} 
                     alt={project.title}
-                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 relative z-10"
+                    onLoad={(e) => {
+                      (e.target as HTMLImageElement).parentElement?.firstElementChild?.remove();
+                    }}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent z-20"></div>
                 
                 <div className="absolute top-6 left-6 flex gap-2">
                   {project.tags.slice(0, 2).map(tag => (
