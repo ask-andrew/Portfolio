@@ -11,15 +11,15 @@ export interface StoryProject extends Project {
  */
 export const PROJECTS: StoryProject[] = [
   {
-    id: 'substack-main',
-    title: 'AskAndrew Substack',
-    question: 'Where do patterns meet prose?',
-    description: 'Weekly insights on the intersection of strategy, leadership, and efficiency hacking. Finding the unseen rhythms in business and life.',
-    category: 'App',
-    tags: ['Writing', 'Strategy', 'Insights'],
-    link: 'https://askandrew.substack.com/',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://askandrew.substack.com/',
-    color: 'from-orange-500 to-rose-600',
+    id: '360brief',
+    title: '360Brief.com',
+    question: 'How can we turn a hundred fragmented pings into a single, actionable brief?',
+    description: 'A strategic solution designed to consolidate fragmented streams of communication into one unified brief. It eliminates cross-channel noise, ensuring leadership stays aligned on what actually matters.',
+    category: 'Dashboard',
+    tags: ['Next.js', 'Strategy', 'Leadership', 'GTM'],
+    link: 'https://360brief.com',
+    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://360brief.com',
+    color: 'from-indigo-500 to-blue-800',
     source: 'manual'
   },
   {
@@ -40,36 +40,24 @@ export const PROJECTS: StoryProject[] = [
     question: 'Can we map the infinite patterns of jazz improvisation?',
     description: 'A visual tool for exploring chord-scale relationships and harmonic substitutions in jazz music. Bringing data visualization to the world of musical theory.',
     category: 'App',
-    tags: ['Music Tech', 'Theory', 'Interactive'],
+    tags: ['React', 'Music Tech', 'Interactive'],
     link: 'https://jazz-theory-app.netlify.app',
     imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://jazz-theory-app.netlify.app',
     color: 'from-purple-500 to-pink-500',
     source: 'manual'
   },
   {
-    id: '4',
-    title: '360Brief.com',
-    question: 'How can we turn a hundred fragmented pings into a single, actionable brief?',
-    description: 'A strategic solution designed to consolidate fragmented streams of communication into one unified brief. It eliminates cross-channel noise, ensuring leadership stays aligned on what actually matters.',
-    category: 'Dashboard',
-    tags: ['Strategy', 'Leadership', 'GTM'],
-    link: 'https://360brief.com',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://360brief.com',
-    color: 'from-indigo-500 to-blue-800',
-    source: 'manual'
-  },
-  {
-    id: '5',
+    id: 'ho-ho-holidays',
     title: 'Ho-Ho-Holidays Analysis',
-    question: 'Does the "Modern Holiday Classic" actually exist, or are we just drowning in quantity?',
-    description: 'An 80-year cinematic investigation into the "Frequency of Greatness." This R-driven analysis tests if holiday movies are actually worse over time or simply buried by production volume. Includes deep dives into the 1960s quality desert, box office myths, and identifying which actors truly own the season.',
+    question: 'Does the "Modern Holiday Classic" actually exist?',
+    description: 'An 80-year cinematic investigation into the "Frequency of Greatness." This R-driven analysis tests if holiday movies are actually worse over time or simply buried by production volume.',
     category: 'Data',
-    tags: ['R', 'Statistics', 'Cinema History'],
+    tags: ['R', 'Statistics', 'Data Storytelling'],
     link: 'https://rpubs.com/askandrew/ho-ho-holidays',
     imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://rpubs.com/askandrew/ho-ho-holidays',
     color: 'from-green-500 to-emerald-400',
     source: 'manual'
-  },
+  }
 ];
 
 /**
