@@ -41,8 +41,8 @@ export const PROJECTS: StoryProject[] = [
     description: 'A visual tool for exploring chord-scale relationships and harmonic substitutions in jazz music. Bringing data visualization to the world of musical theory.',
     category: 'App',
     tags: ['React', 'Music Tech', 'Interactive'],
-    link: 'https://thejazzmaster.netlify.app',
-    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://thejazzmaster.netlify.app',
+    link: 'https://thesaxshed.netlify.app',
+    imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://thesaxshed.netlify.app',
     color: 'from-purple-500 to-pink-500',
     source: 'manual'
   },
@@ -65,7 +65,7 @@ export const PROJECTS: StoryProject[] = [
  */
 export const NETLIFY_DEPLOYMENT_MAP: { [githubRepoName: string]: string } = {
   'library-shift-swapper': 'https://theshiftswapper.netlify.app',
-  'jazz-theory-app': 'https://thejazzmaster.netlify.app',
+  'jazz-theory-app': 'https://thesaxshed.netlify.app',
   'sentiment-analysis-dashboard': 'https://sentiment-analysis-dashboard.netlify.app',
   'churn-prediction-model': 'https://churn-prediction-model.netlify.app',
 };
